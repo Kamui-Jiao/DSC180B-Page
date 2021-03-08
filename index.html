@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Jian Jiao">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FrontPage</title>
+    <title>Capstone Project</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
@@ -21,13 +21,14 @@
       <!--Company name-->
       <h5 class="my-2 font-weight-normal float-left">DSC180 Spring 2021</h5>
       <!--Logo-->
-      <div class="mt-2" style="width:200px;margin:auto;background:black;color:white;font-size:20px;text-align:center;cursor:pointer;" onclick="window.open("#","_self")">
-        Project Report
+      <div class="mt-2" style="width:400px;margin:auto;background:black;color:white;font-size:20px;text-align:center;cursor:pointer;" >
+        DSC180B Capstone Project 
       </div>
     </div>
     <div style="height:200px;background:#294562;text-align:center;color:white;font-size:40px;line-height:260px">
       Potential Improvement of MAMADROID System
     </div>
+    <h5 style="text-align:center">Jian Jiao, Zihan Qin</h5>
     <nav class="navbar navbar-expand-sm bg-light navbar-light border-bottom shadow-sm justify-content-center">
       <!-- Brand -->
       <a class="navbar-brand" href="#">MAIN</a>
@@ -38,66 +39,377 @@
           <a class="nav-link" href="#">Introduction</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Data</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">EDA</a>
+          <a class="nav-link" href="#">Data Generating Process</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Model</a>
         </li>
-
-        <!-- Dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-            Other
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Link 1</a>
-            <a class="dropdown-item" href="#">Link 2</a>
-            <a class="dropdown-item" href="#">Link 3</a>
-          </div>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Conclusion</a>
         </li>
       </ul>
     </nav>
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb border-top border-bottom shadow-sm">
-      <a class="breadcrumb-item" href="#">Home</a>
-      <a class="breadcrumb-item" href="#">Introduction</a>
-      <span class="breadcrumb-item active">Current</span>
-    </nav>
-
     <!-- Main content -->
-    <div class="container border shadow" style="height:300px">
-      Introduction
+    <div class="container border shadow" style="height:400px; width:1000px">
+      <br>
+      <h1><b>Introduction</b></h1>
+      <hr>
+      <p>
+        During 2019, 87% of the smartphone sales were running Android system. Due to this popularity, cyber-criminals have 
+        increasingly targeted this ecosystem, as malware running on mobile devices can be particularly lucrative. As a result, 
+        the research community has devoted significant attention to malware detection on Android system. Previous work has 
+        \often relied on the permissions requested by apps, using models built from malware samples. This strategy, however, 
+        is prone to false positives, since there are often legitimate reasons for benign apps to request permission classified 
+        as dangerous. To overcome this obstacle, research community has developed a novel system for malware detection called 
+        <b>MAMADROID System</b>. Instead of relying on the permissions requested by apps, MAMADROID System relies on the sequences of 
+        abstracted API calls performed by an app rather than their use or frequency, using Markov Chains to model the behavior 
+        of the apps through the sequences of API calls. By doing research on this novel system, we are very interested in 
+        finding a way to better understand this system and improve it. Therefore, our research question is: <b>Exploring and 
+        explaining potential improvement of MAMADROID System</b>. To achieve this, our plan was to find other features to replace 
+        the previous one used in Markov Chains model. 
+      </p>
     </div>
-    <div class="container border shadow" style="height:300px">
-      Data Generating Process
+    <div class="container border shadow" style="height:1620px; width:1000px">
+      <br>
+      <h1><b>Data Generating Process</b></h1>
+      <hr>
+      <h2>
+        Source of data
+      </h2>
+      <br>
+      <p>
+        Our raw apps data are collected from course DSMPL. We randomly collected 77 apps contain malware and 143 benign apps, 
+        220 apps data in total. Then we divided them into 147 apps for training and 73 apps for testing. Since the raw data 
+        have been classified into different categories, we are 100% percent sure that those benign apps don’t contain any 
+        malware. 
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>
+        Data Description
+      </h2>
+      <br>
+      <p>
+        The original form of our data was Android Application Package (APK) which could be unpacked by Apktools. We unpacked 
+        those packages to get the Smali specifically for malware detection. Smali file is a type of file convert from the 
+        original Java code of an app. An example of the structure of a Smali file and the API call inside it is shown below:
+        <br>
+        <br>
+        <img src="smali.jpg" alt = "smali" id="smali" style="width:400px; "> 
+        <br>
+        <br>
+        In the figure above, text in black represent the class information of a smali file. In this specific example, the 
+        class name is <b>LGeckoProvider</b>. Text in blue is Static fields of this Smali file and text in green is the
+         method of this Smali file. Text in red is what we are going to focus on: <b>API calls</b>. Based on previous works 
+         done by research community, malicious action of an app is always appeared in Smali files so that use Smali file for 
+         malware detection is significantly meaningful. The API calls we are using is extracted from Smali files for each 
+         application. By dealing with API calls, we could be more aware of the characteristic of a malware so that we 
+         could better analyze a way for malware detection. 
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>
+        Feature Extraction
+      </h2>
+      <br>
+      <p>
+        The original MAMADROID System used Markov Chains to model app behavior, by evaluating transitions between calls. 
+        For each app, MAMADROID System takes as input the sequence of abstracted API calls (families/packages) of that app 
+        and builds a Markov chain where each package/family is a state and the transitions represent the probability of 
+        moving from one state to another. To improve this, we first try to take input as the method sequences of API calls 
+        instead of families/packages. Thus, the feature that we are going to use is the <b>method sequences</b> of API calls 
+        where each method and the API calls it contains represent states and the transitions represent the probability of a 
+        method moving to each API calls inside it. Here is an example of our feature: 
+        <br>
+        <br>
+        <img src="feature.jpg" alt = "feature" id="feature" style="width:700px; "> 
+        <br>
+        <br>
+        In the figure above, the blue box is a method and content in the grey box is API calls contain in this method. 
+        Our model used this feature to fit into Markov Chains to evaluate the behavior of an app and then classified it 
+        into either benign or malware. 
+      </p>
     </div>
-    <div class="container border shadow" style="height:300px">
-      EDA
-    </div>
-    <div class="container border shadow" style="height:300px">
-      Model
-    </div>
+    <div class="container border shadow" style="height:2800px; width:1000px">
+      <br>
+      <h1><b>Model</b></h1>
+      <hr>
+      <h2>Model Description</h2>
+      <br>
+      <p>
+      Using the features derived from data extracting process, based on the fact that the predictive task is generally 
+      classification problem, we have built 3 models in this project: Logistic Regression Model, Decision Tree Classifier, 
+      K-Nearest Neighbor-Classifier. This is the table which contains the test accuracy of our three models:
+      <table style="width:60%;border: 1px solid black;text-align:center">
+        <colgroup>
+            <col span="1" style="width:15%">
+            <col span="1" style="width:15%">
+            <col span="1" style="width:15%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th rowspan="3" style="border: 2px solid black">Model</th>
+                <th rowspan="3" style="border: 2px solid black">Train Accuracy</th>
+                <th rowspan="3" style="border: 2px solid black">Test Accuracy</th>
+            </tr>
+        </thead> 
 
-    <!-- Footer -->
-    <footer class="container pt-4 my-md-5 pt-md-5 border-top">
-      <div class="row" style="text-align:center">
-        <div class="col-6 col-md border-right">
-          <h5>Zihan Qin</h5>
-        </div>
-        <div class="col-6 col-md border-right">
-          <h5>Jian Jiao</h5>
-        </div>
-        <div class="col-6 col-md border-right">
-          <h5>A03 Malware</h5>
-        </div>
-        <div class="col-6 col-md">
-          <h5>Group 04</h5>
-        </div>
-      </div>
-    </footer>
+        <tbody>            
+          <tr>
+              <td style="border: 2px solid black">Logistic</td>
+              <td style="border: 2px solid black">0.721</td>
+              <td style="border: 2px solid black">0.822</td>
+          </tr>
+          <tr>
+              <td style="border: 2px solid black">DecisionTree</td>
+              <td style="border: 2px solid black">0.918</td>
+              <td style="border: 2px solid black">0.74</td>  
+          </tr>
+          <tr>
+            <td style="border: 2px solid black">kNN</td>
+            <td style="border: 2px solid black">0.925</td>
+            <td style="border: 2px solid black">0.918</td>  
+        </tr>
+        </tbody>
+      </table>
+      <br>
+      According to this table, kNN, which represents K-Nearest-Neighbor Classifier, performed best among all three models.
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>K-Nearest-Neighbor Classifier</h2>
+      <br>
+      <p>
+        In K-Nearest-Neighbor model, each data point is composed by a vector of six values: the number of Api-calls from android, 
+        androidx, java, javax, kotlin, self-defined families. A sample observation of vector would be like the following.
+        <table style="width:80%;border: 1px solid black;text-align:center">
+          <colgroup>
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+          </colgroup>
+          <thead>
+              <tr>
+                  <th rowspan="3" style="border: 2px solid black">Index</th>
+                  <th rowspan="3" style="border: 2px solid black">android</th>
+                  <th rowspan="3" style="border: 2px solid black">androidx</th>
+                  <th rowspan="3" style="border: 2px solid black">java</th>
+                  <th rowspan="3" style="border: 2px solid black">javax</th>
+                  <th rowspan="3" style="border: 2px solid black">kotlin</th>
+                  <th rowspan="3" style="border: 2px solid black">self</th>
+              </tr>
+          </thead> 
+  
+          <tbody>            
+            <tr>
+                <td style="border: 2px solid black">1</td>
+                <td style="border: 2px solid black">5382</td>
+                <td style="border: 2px solid black">21</td>
+                <td style="border: 2px solid black">8367</td>
+                <td style="border: 2px solid black">0</td>
+                <td style="border: 2px solid black">0</td>
+                <td style="border: 2px solid black">4362</td>
+          </tbody>
+        </table>
+        <br>
+        During prediction process, KNN model will search through data points in the training set to find N-nearest data 
+        points of the input point and predict the result to be the majority of these neighbors. For instance, we set number 
+        of neighbors to be 5 and get five data points. Two of them are malware and three of them are benign software. Then the 
+        model will predict it to be the majority of its neighbors, which is benign software.
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>Model Optimization</h2>
+      <br>
+      <p>
+        Since kNN model performed the best among all three, we choose this model and tried to optimize this model. To improve this 
+        model, we tried several different values of K, from 1 to 20. The following figure shows how test accuracy and train accuracy 
+        changed along with different K:
+        <br>
+        <br>
+        <img src="KNN1.PNG" alt = "knn" id="knn" style="width:400px; "> 
+        <br>
+        <br>
+        Based on figure above, it is obvious that when K=3, the model has the greatest test accuracy and train accuracy 
+        (K=1 has the highest train accuracy since K=1 means finding the data point itself). 
+        <table style="width:60%;border: 1px solid black;text-align:center">
+          <colgroup>
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+          </colgroup>
+          <thead>
+              <tr>
+                  <th rowspan="3" style="border: 2px solid black">K</th>
+                  <th rowspan="3" style="border: 2px solid black">Train Accuracy</th>
+                  <th rowspan="3" style="border: 2px solid black">Test Accuracy</th>
+              </tr>
+          </thead> 
+  
+          <tbody>            
+            <tr>
+                <td style="border: 2px solid black">1</td>
+                <td style="border: 2px solid black">1</td>
+                <td style="border: 2px solid black">0.89</td>
+            </tr>
+            <tr>
+                <td style="border: 2px solid black"><b>3</b></td>
+                <td style="border: 2px solid black"><b>0.925</b></td>
+                <td style="border: 2px solid black"><b>0.918</b></td>  
+            </tr>
+            <tr>
+              <td style="border: 2px solid black">5</td>
+              <td style="border: 2px solid black">0.891</td>
+              <td style="border: 2px solid black">0.849</td>  
+          </tr>
+          </tbody>
+        </table>
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>Advanced Model</h2>
+      <br>
+      <p>
+        We then focus on the predicted results to discover ways to improve our current 3-Nearest-Neighbor model. 
+        To research the predicted results in a more detailed way, we generate TP-TN-FP-FN matrix to reveal deeper 
+        information behind model performance. FP (A benignware predicted to be malware) and FN (A malware predicted 
+        to be benignware) are the most important categories since they shows mistakes made by the model. FN has more 
+        significant meaning since letting a malware pass detection would be a disaster. The following table shows 
+        the statistics.
+        <table style="width:40%;border: 1px solid black;text-align:center">
+          <colgroup>
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+          </colgroup>
+          <thead>
+              <tr>
+                  <th rowspan="3" style="border: 2px solid black"></th>
+                  <th rowspan="3" style="border: 2px solid black">Positive</th>
+                  <th rowspan="3" style="border: 2px solid black">Negative</th>
+              </tr>
+          </thead> 
+  
+          <tbody>            
+            <tr>
+                <td style="border: 2px solid black">True</td>
+                <td style="border: 2px solid black">62</td>
+                <td style="border: 2px solid black">137</td>
+            </tr>
+            <tr>
+                <td style="border: 2px solid black">False</td>
+                <td style="border: 2px solid black">6</td>
+                <td style="border: 2px solid black">15</td>  
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        We classify all software according to TP-TN-FP-FN and draw figure of their api-call families.
+        <br>
+        <br>
+        <img src="TFPN.PNG" alt = "smali" id="smali" style="width:400px; "> 
+        <br>
+        <br>
+        According to the graph, malware which were classified to be benign software have fewer number of api-calls 
+        in general compared to TP malware. Also, FN malware have larger possibility of invoking self defined api-calls 
+        than java calls. FP benignware which were classified to be have larger number of api-calls compared to TN benignware. 
+        In addition, malware rarely call apis from androidx and kotlin families. Based on information above, we built our new 
+        advanced model which standardizes number of api-calls to fraction of total number of api-calls of specific software, 
+        sets threshold for FN malwares and contains a hybrid of KNN and our self-defined Decision Tree. The parameter search 
+        of our advanced model is showed below.
+        <br>
+        <br>
+        <img src="FinalModel.PNG" alt = "smali" id="smali" style="width:400px; "> 
+        <br>
+        <br>
+      </p>
+    </div>
+    <div class="container border shadow" style="height:1100px; width:1000px">
+      <br>
+      <h1><b>Conclusion</b></h1>
+      <hr>
+      <h2>Model Comparison</h2>
+      <br>
+      <p>
+        <table style="width:60%;border: 1px solid black;text-align:center">
+          <colgroup>
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+              <col span="1" style="width:15%">
+          </colgroup>
+          <thead>
+              <tr>
+                  <th rowspan="3" style="border: 2px solid black">Model</th>
+                  <th rowspan="3" style="border: 2px solid black">Train Accuracy</th>
+                  <th rowspan="3" style="border: 2px solid black">Test Accuracy</th>
+              </tr>
+          </thead> 
+  
+          <tbody>            
+            <tr>
+                <td style="border: 2px solid black"><b>Advanced KNN</b></td>
+                <td style="border: 2px solid black"><b>0.915</b></td>
+                <td style="border: 2px solid black"><b>0.945</b></td>
+            </tr>
+            <tr>
+                <td style="border: 2px solid black">Standardized KNN</td>
+                <td style="border: 2px solid black">0.823</td>
+                <td style="border: 2px solid black">0.877</td>  
+            </tr>
+            <tr>
+              <td style="border: 2px solid black">KNN</td>
+              <td style="border: 2px solid black">0.925</td>
+              <td style="border: 2px solid black">0.917</td>  
+          </tr>
+          </tbody>
+        </table>
+        <br>
+        The table above is a comparison between performance of three models. 
+        According to this accuracy table, our advanced performanced the best among all three models. 
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>Model Analysis</h2>
+      <br>
+      <p>
+        The best model, Advanced kNN, not only consider 3-Nearest-Neighbor but also covering edge cases. 
+        Comparing to other two models, Standardized kNN make the input standardized to percentile before 
+        training and predicting, but it will lost information about number of api-call. Normal kNN only 
+        considers major cases and does not take margins into consideration.
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>Data Findings</h2>
+      <br>
+      <p>
+        According to our research results: 1.Malware with fewer api-calls is more likely to be classified as 
+        benignware. 2.Malware tend to has more java api-calls than self-defined and android api-calls.
+      </p>
+      <br>
+      <hr>
+      <br>
+      <h2>Significance</h2>
+      <br>
+      <p>
+        The result of this project has broad application in our daily life. If we can build a strong model to help 
+        Android users make accurate classification about whether a software is benign or harmful, it can protect 
+        information, privacy and save a lot of money for users.
+      </p>
+    </div>
+    <br>
+    <br>
   </body>
+
 </html>
